@@ -10,4 +10,14 @@ defmodule ToyRobot do
   def report(%ToyRobot.Position{x: x, y: y, facing: facing} = _robot) do
     {x, y, facing}
   end
+
+  @directions_to_the_right %{north: :east, east: :south, south: :west, west: :north}
+  def right(%ToyRobot.Position{facing: facing} = robot) do
+    %ToyRobot.Position{robot | facing: @directions_to_the_right[facing]}
+  end
+
+  @directions_to_the_left Enum.map(@directions_to_the_right, fn {from, to} -> {to, from} end)
+  def left(%ToyRobot.Position{facing: facing} = robot) do
+    %ToyRobot.Position{robot | facing: @directions_to_the_left[facing]}
+  end
 end
