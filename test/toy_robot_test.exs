@@ -2,27 +2,6 @@ defmodule ToyRobotTest do
   use ExUnit.Case
   doctest ToyRobot
 
-  test "places the Toy Robot on the table in the default position" do
-    assert ToyRobot.place == {:ok, %ToyRobot.Position{x: 0, y: 0, facing: :north}}
-  end
-
-  test "places the Toy Robot on the table in the specified position" do
-    assert ToyRobot.place(1, 2, :south) == {:ok, %ToyRobot.Position{x: 1, y: 2, facing: :south}}
-  end
-
-  test "does not place the robot outside of the table" do
-    assert ToyRobot.place(-1, -1, :north) == {:failure, "Invalid position"}
-  end
-
-  test "does not place the robot with invalid facing direction" do
-    assert ToyRobot.place(0, 0, :north_west) == {:failure, "Invalid facing direction"}
-  end
-
-  test "provides the report of the robot's position" do
-    {:ok, robot} = ToyRobot.place(2, 3, :west)
-    assert ToyRobot.report(robot) == {2, 3, :west}
-  end
-
   test "rotates the robot to the right" do
     {:ok, robot} = ToyRobot.place(0, 0, :north)
     position = robot |> ToyRobot.right |> ToyRobot.report
