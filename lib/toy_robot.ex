@@ -20,4 +20,20 @@ defmodule ToyRobot do
   def left(%ToyRobot.Position{facing: facing} = robot) do
     %ToyRobot.Position{robot | facing: @directions_to_the_left[facing]}
   end
+
+  def move(%ToyRobot.Position{x: _, y: y, facing: :north} = robot) do
+    %ToyRobot.Position{robot | y: y + 1}
+  end
+
+  def move(%ToyRobot.Position{x: x, y: _, facing: :east} = robot) do
+    %ToyRobot.Position{robot | x: x + 1}
+  end
+
+  def move(%ToyRobot.Position{x: _, y: y, facing: :south} = robot) do
+    %ToyRobot.Position{robot | y: y - 1}
+  end
+
+  def move(%ToyRobot.Position{x: x, y: _, facing: :west} = robot) do
+    %ToyRobot.Position{robot | x: x - 1}
+  end
 end

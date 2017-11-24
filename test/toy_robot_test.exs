@@ -51,4 +51,36 @@ defmodule ToyRobotTest do
 
     assert right_position == left_position
   end
+
+  test "moving robot up if it is facing to the north" do
+    position = ToyRobot.place(0, 0, :north)
+               |> ToyRobot.move
+               |> ToyRobot.report
+
+    assert position == {0, 1, :north}
+  end
+
+  test "moving robot right if it is facing to the east" do
+    position = ToyRobot.place(0, 0, :east)
+               |> ToyRobot.move
+               |> ToyRobot.report
+
+    assert position == {1, 0, :east}
+  end
+
+  test "moving robot down if it is facing to the south" do
+    position = ToyRobot.place(4, 4, :south)
+               |> ToyRobot.move
+               |> ToyRobot.report
+
+    assert position == {4, 3, :south}
+  end
+
+  test "moving robot left if it is facing to the west" do
+    position = ToyRobot.place(4, 4, :west)
+               |> ToyRobot.move
+               |> ToyRobot.report
+
+    assert position == {3, 4, :west}
+  end
 end
