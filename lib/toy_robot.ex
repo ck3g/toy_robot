@@ -3,11 +3,23 @@ defmodule ToyRobot do
   @table_top_y 4
 
   def place do
-    %ToyRobot.Position{}
+    {:ok, %ToyRobot.Position{}}
+  end
+
+  def place(x, y, _facing)
+  when x < 0 or y < 0 or x > @table_top_y or y > @table_top_y
+  do
+    {:failure, "Invalid position"}
+  end
+
+  def place(_x, _y, facing)
+  when facing not in [:north, :east, :south, :west]
+  do
+    {:failure, "Invalid facing direction"}
   end
 
   def place(x, y, facing) do
-    %ToyRobot.Position{x: x, y: y, facing: facing}
+    {:ok, %ToyRobot.Position{x: x, y: y, facing: facing}}
   end
 
   def report(%ToyRobot.Position{x: x, y: y, facing: facing} = _robot) do
