@@ -6,46 +6,59 @@ defmodule ToyRobot.CLI do
   end
 
   @commands %{
-    "quit" => "Quits the simulator",
-    "place" => "format: \"place [X,Y,F]\". " <>
-               "Places the Robot into X,Y facing F (Default is 0,0,North). " <>
-               "Where facing is: north, west, south or east."
+    "quit"   => "Quits the simulator",
+    "place"  => "Places the Robot into X,Y facing F (Default is 0,0,North). " <>
+                "Where facing is: north, west, south or east. " <>
+                "Format: \"place [X,Y,F]\".",
+    "report" => "The Toy Robot reports about its position"
   }
 
-  defp receive_command do
+  defp receive_command(robot \\ nil) do
     IO.gets("> ")
     |> String.trim
     |> String.downcase
     |> String.split(" ")
-    |> execute_command
+    |> execute_command(robot)
   end
 
-  defp execute_command(["place"]) do
-    ToyRobot.place
-    receive_command()
+  defp execute_command(["place"], _robot) do
+    {:ok, robot} = ToyRobot.place
+    robot |> receive_command
   end
 
-  defp execute_command(["place" | params]) do
+  defp execute_command(["place" | params], _robot) do
     {x, y, facing} = process_place_params(params)
 
     case ToyRobot.place(x, y, facing) do
-      {:ok, _robot} ->
-        receive_command()
+      {:ok, robot} ->
+        receive_command(robot)
       {:failure, message} ->
         IO.puts message
         receive_command()
     end
   end
 
-  defp execute_command(["quit"]) do
+  defp execute_command(["report"], nil) do
+    IO.puts "The robot has not been placed yet."
+    receive_command()
+  end
+
+  defp execute_command(["report"], robot) do
+    {x, y, facing} = robot |> ToyRobot.report
+    IO.puts String.upcase("#{x},#{y},#{facing}")
+
+    receive_command(robot)
+  end
+
+  defp execute_command(["quit"], _robot) do
     IO.puts "\nConnection lost"
   end
 
-  defp execute_command(_unknown) do
+  defp execute_command(_unknown, robot) do
     IO.puts("\nInvalid command. I don't know what to do.")
     print_help_message()
 
-    receive_command()
+    receive_command(robot)
   end
 
   defp process_place_params(params) do
