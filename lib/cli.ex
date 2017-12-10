@@ -1,5 +1,18 @@
 defmodule ToyRobot.CLI do
-  def main(_args) do
+  def main(args) do
+    args |> parse_args |> process_args
+  end
+
+  def parse_args(args) do
+    {params, _, _} =  OptionParser.parse(args, switches: [help: :boolean])
+    params
+  end
+
+  def process_args([help: true]) do
+    print_help_message()
+  end
+
+  def process_args(_) do
     IO.puts("Welcome to the Toy Robot simulator!")
     print_help_message()
     receive_command()
