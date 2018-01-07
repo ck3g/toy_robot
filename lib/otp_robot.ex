@@ -16,6 +16,14 @@ defmodule ToyRobot.OtpRobot do
     GenServer.cast(__MODULE__, :failure)
   end
 
+  def start_link(_opts) do
+    place
+  end
+
+  def init(current_state) do
+    {:ok, current_state}
+  end
+
   def handle_call(:report, _from, current_state) do
     report = ToyRobot.report(current_state)
     {:reply, report, current_state}
