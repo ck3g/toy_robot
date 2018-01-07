@@ -12,6 +12,10 @@ defmodule ToyRobot.OtpRobot do
   def left, do: GenServer.cast(__MODULE__, :left)
   def right, do: GenServer.cast(__MODULE__, :right)
 
+  def trigger_failure do
+    GenServer.cast(__MODULE__, :failure)
+  end
+
   def handle_call(:report, _from, current_state) do
     report = ToyRobot.report(current_state)
     {:reply, report, current_state}
@@ -27,5 +31,9 @@ defmodule ToyRobot.OtpRobot do
 
   def handle_cast(:right, current_state) do
     {:noreply, ToyRobot.right(current_state)}
+  end
+
+  def handle_cast(:failure, _current_state) do
+    {:noreply, ToyRobot.failure}
   end
 end

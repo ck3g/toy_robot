@@ -105,4 +105,8 @@ defmodule ToyRobot do
   This function used as fallback if the robot cannot move outside the table
   """
   def move(robot), do: robot
+
+  def failure do
+    raise "Connection has been lost"
+  end
 end
