@@ -2,6 +2,7 @@ defmodule ToyRobot.ControlPanel do
   use Supervisor
 
   def deploy_robot do
+    Agent.start_link(fn -> nil end, name: :robot_state_repository)
     Supervisor.start_link(__MODULE__, :ok, [])
   end
 

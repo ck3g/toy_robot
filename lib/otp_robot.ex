@@ -20,7 +20,15 @@ defmodule ToyRobot.OtpRobot do
     place
   end
 
-  def init(current_state) do
+  def init(_) do
+    current_state =
+      case Agent.get(:robot_state_repository, &(&1)) do
+        nil ->
+          {:ok, state} = ToyRobot.place
+          state
+        state -> state
+      end
+
     {:ok, current_state}
   end
 
@@ -43,5 +51,9 @@ defmodule ToyRobot.OtpRobot do
 
   def handle_cast(:failure, _current_state) do
     {:noreply, ToyRobot.failure}
+  end
+
+  def terminate(_reason, current_state) do
+    Agent.update(:robot_state_repository, fn (_) -> current_state end)
   end
 end
